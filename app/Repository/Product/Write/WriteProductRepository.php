@@ -2,9 +2,11 @@
 
 namespace App\Repository\Product\Write;
 
+use App\Exceptions\Product\CreateProductException;
+use App\Exceptions\Product\DeleteProductException;
+use App\Exceptions\Product\UpdateProductException;
 use App\Models\Product\Product;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\JsonResponse;
 
 class WriteProductRepository implements WriteProductRepositoryInterface
 {
@@ -13,29 +15,38 @@ class WriteProductRepository implements WriteProductRepositoryInterface
         return Product::query();
     }
 
+    /**
+     * @throws CreateProductException
+     */
     public function create(array $data): Product
     {
         /* @var Product $product */
-        $product = $this->query()->create($data);
+        if (!$product = $this->query()->create($data)) {
+            throw new CreateProductException();
+        }
 
         return $product;
     }
 
-    public function update(int $id, array $data): JsonResponse
+    /**
+     * @throws UpdateProductException
+     */
+    public function update(int $id, array $data): bool
     {
-        $product = Product::query()->where('user_id', $id)->first()->update($data);
-        if (!$product) {
-            return response()->json(['error' => 'not such product']);
-        } else {
-            return response()->json(['status' => 'updated']);
+        if (!$this->query()->where('user_id', $id)->update($data)) {
+            throw new UpdateProductException();
         }
+        return true;
     }
 
+    /**
+     * @throws DeleteProductException
+     */
     public function delete(int $id, int $userId): bool
     {
         if (!$this->query()->where('id', $id)->where('user_id', $userId)->delete()) {
-            return false;
-        };
+            throw  new DeleteProductException();
+        }
 
         return true;
     }

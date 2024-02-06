@@ -13,14 +13,14 @@ use App\Services\User\Dto\RegisterDto;
 
 class AuthController extends Controller
 {
-    public function register(RegisterAction $action, RegisterRequest $request)
+    public function register(RegisterAction $action, RegisterRequest $request): TokenResource
     {
         $dto = RegisterDto::fromRequest($request);
         $userToken = $action->run($dto);
         return new TokenResource($userToken);
     }
 
-    public function login(LoginAction $action, LoginRequest $request)
+    public function login(LoginAction $action, LoginRequest $request): TokenResource
     {
         $dto = LoginDto::fromRequest($request);
         $userToken = $action->run($dto);

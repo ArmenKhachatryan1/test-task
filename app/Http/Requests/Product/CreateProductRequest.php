@@ -27,22 +27,22 @@ class CreateProductRequest extends FormRequest
         ];
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->input(self::NAME);
     }
 
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->input(self::DESCRIPTION);
     }
 
-    public function getPrice()
+    public function getPrice(): string
     {
         return $this->input(self::PRICE);
     }
 
-    public function getUserId()
+    public function getUserId(): int
     {
         return $this->user()->id;
     }

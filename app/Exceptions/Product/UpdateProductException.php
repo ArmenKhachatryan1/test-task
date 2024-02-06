@@ -2,14 +2,16 @@
 
 namespace App\Exceptions\Product;
 
-class UpdateProductException extends ProductExeption
+use App\Exceptions\ProductException;
+
+class UpdateProductException extends ProductException
 {
-    public function getErrorMessage()
+    public function getStatus():int
     {
-        $data = [
-            'message' => 'fail to update product',
-            'status' => ProductExeption::FAIL_TO_UPDATE_PRODUCT
-        ];
-        return response()->json($data);
+        return ProductException::FAIL_TO_UPDATE_PRODUCT;
+    }
+    public function getStatusMessage(): string
+    {
+        return 'Fail to update user';
     }
 }

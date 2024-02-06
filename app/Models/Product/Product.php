@@ -37,14 +37,14 @@ class Product extends Model
             'description' => $dto->description,
         ];
     }
-    public static function getAllProducts(GetAllProductsDto $dto): array{
-        return [
-            'name' => $dto->name,
-            'description' => $dto->description,
-            'price' => $dto->price,
-            'user_id' => $dto->userId
-        ];
-    }
+//    public static function getAllProducts(GetAllProductsDto $dto): array{
+//        return [
+//            'name' => $dto->name,
+//            'description' => $dto->description,
+//            'price' => $dto->price,
+//            'user_id' => $dto->userId
+//        ];
+//    }
     public function user(): hasOne
     {
 

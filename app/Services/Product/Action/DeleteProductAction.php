@@ -11,8 +11,8 @@ class DeleteProductAction
     ) {
     }
 
-    public function run(int $id, int $userId): bool
+    public function run(int $id, int $userId): void
     {
-        return $this->writeProductRepository->delete($id, $userId);
+         $this->writeProductRepository->delete($id, $userId);
     }
 }

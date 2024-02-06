@@ -14,7 +14,7 @@ class CreateProductAction
     ) {
     }
 
-    public function run(CreateProductDto $dto)
+    public function run(CreateProductDto $dto): Product
     {
         return $this->createProductRepository->create(Product::createProduct($dto));
     }

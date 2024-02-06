@@ -29,22 +29,22 @@ class GetAllProductsRequest extends FormRequest
         ];
     }
 
-    public function getName()
+    public function getName(): array
     {
         return $this->get(self::NAME);
     }
 
-    public function getDescription()
+    public function getDescription(): array
     {
         return $this->get(self::DESCRIPTION);
     }
 
-    public function getPrice()
+    public function getPrice(): array
     {
         return $this->get(self::PRICE);
     }
 
-    public function getUserId()
+    public function getUserId(): int
     {
         return $this->user()->id;
     }

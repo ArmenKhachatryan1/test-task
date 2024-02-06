@@ -2,14 +2,17 @@
 
 namespace App\Exceptions\Product;
 
-class CreateProductException extends ProductExeption
+use App\Exceptions\ProductException;
+
+class CreateProductException extends ProductException
 {
-    public function getErrorMessage()
+    public function getStatus(): int
     {
-        $data = [
-            'message' => 'fail to create product',
-            'status' => ProductExeption::FAIL_TO_CREATE_PRODUCT
-        ];
-        return response()->json($data);
+        return ProductException::FAIL_TO_CREATE_PRODUCT;
+    }
+
+    public function getStatusMessage(): string
+    {
+        return "fail to create product";
     }
 }

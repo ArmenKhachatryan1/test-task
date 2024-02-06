@@ -8,7 +8,7 @@ use App\Models\User\User;
 
 class RegisterRepository implements RegisterProductRepositoryInterface
 {
-    public function register(array $data)
+    public function register(array $data): array
     {
         $user = User::query()->create($data);
         $token = $user->createToken('auth-token')->accessToken;
