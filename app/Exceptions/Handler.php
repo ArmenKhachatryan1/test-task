@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -27,15 +28,37 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
     public function render($request, Throwable $e)
     {
-        dd($e->getMessage());
+        /*
+            get status code and status message
+        */
+        $internalError = Response::HTTP_INTERNAL_SERVER_ERROR;
+        $statusCode = $e->getCode();
+        $details = [
+            'message' => $e->getMessage()
+        ];
+
+
+        if ($e instanceof ProductException) {
+            $statusCode = $e->getStatus();
+            $details['message'] = $e->getStatusMessage();
+            $internalError = $e->getHttpSatusCode();
+        }
+
+        if ($e instanceof UserException) {
+            $statusCode = $e->getStatus();
+            $details = $e->getStatusMessage();
+            $internalError = $e->getHttpStatusCode();
+        }
+        $data = [
+            'status' => $statusCode,
+            'error' => $details
+        ];
+
+        return response()->json($data, $internalError);
     }
-    public function context()
-    {
-        return array_merge(parent::context(),
-        [
-            'foo' => 'bar'
-        ]);
-    }
+
+
 }

@@ -4,6 +4,7 @@ namespace App\Services\Product\Action;
 
 use App\Http\Requests\Product\GetAllProductsRequest;
 use App\Repository\Product\Read\ReadProductRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 
 class GetAllProductsAction
 {
@@ -12,7 +13,7 @@ class GetAllProductsAction
     ) {
     }
 
-    public function run(GetAllProductsRequest $request)
+    public function run(GetAllProductsRequest $request): Collection
     {
         return $this->readProductRepository->getAllProducts('user', $request->getUserId());
     }

@@ -13,7 +13,7 @@ class ProfileRequest extends FormRequest
         ];
     }
 
-    public function getUserId()
+    public function getUserId(): int
     {
         return $this->user()->id;
     }

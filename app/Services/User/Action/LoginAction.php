@@ -2,12 +2,17 @@
 
 namespace App\Services\User\Action;
 
+use App\Exceptions\User\LoginException;
 use App\Services\User\Dto\LoginDto;
+use Illuminate\Http\JsonResponse;
 
 class LoginAction
 {
 
-    public function run(LoginDto $dto)
+    /**
+     * @throws LoginException
+     */
+    public function run(LoginDto $dto): JsonResponse|array
     {
         $data = [
             'email' => $dto->email,
@@ -18,7 +23,7 @@ class LoginAction
 
             return ['token' => $token, 'user' => auth()->user()];
         } else {
-            return response()->json(['error message' => 'Unauthorized']);
+            throw new LoginException();
         }
     }
 

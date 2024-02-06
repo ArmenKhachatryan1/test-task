@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Product;
 
+use App\Exceptions\Product\UpdateProductException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\CreateProductRequest;
 use App\Http\Requests\Product\DeleteProductRequest;
@@ -9,14 +10,12 @@ use App\Http\Requests\Product\GetAllProductsRequest;
 use App\Http\Requests\Product\GetProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Http\Resources\Product\ProductResource;
-use App\Listeners\SendPodcastNotification;
 use App\Services\Product\Action\CreateProductAction;
 use App\Services\Product\Action\DeleteProductAction;
 use App\Services\Product\Action\GetAllProductsAction;
 use App\Services\Product\Action\GetProductAction;
 use App\Services\Product\Action\UpdateProductAction;
 use App\Services\Product\Dto\CreateProductDto;
-use App\Services\Product\Dto\GetAllProductsDto;
 use App\Services\Product\Dto\UpdateProductDto;
 use Illuminate\Http\JsonResponse;
 
@@ -25,7 +24,7 @@ class ProductController extends Controller
     public function create(
         CreateProductAction $action,
         CreateProductRequest $request
-    ) {
+    ): ProductResource {
         $dto = CreateProductDto::fromRequest($request);
         $product = $action->run($dto);
 
@@ -46,25 +45,33 @@ class ProductController extends Controller
     ): JsonResponse {
         $products = $action->run($request);
 
-        return response()->json(['product' => $products]);
+        return $this->jsonResponse(['product' => $products]);
     }
 
+    /**
+     * @param UpdateProductAction $action
+     * @param UpdateProductRequest $request
+     * @return JsonResponse
+     * @throws UpdateProductException
+     */
     public function update(
         UpdateProductAction $action,
         UpdateProductRequest $request
-    ) {
+    ): JsonResponse {
         $dto = UpdateProductDto::fromRequest($request);
-        return $action->run($request, $dto);
+        $action->run($request, $dto);
+
+        return $this->jsonResponse(['message' => 'updated']);
     }
 
     public function delete(
         DeleteProductAction $action,
         DeleteProductRequest $request
-    ): bool {
-        return $action->run($request->getId(), $request->getUserId());
+    ): JsonResponse {
+        $action->run($request->getId(), $request->getUserId());
+
+        return $this->jsonResponse();
     }
 
-    public function user()
-    {
-    }
+
 }

@@ -2,10 +2,12 @@
 
 namespace App\Services\Product\Action;
 
+use App\Exceptions\Product\UpdateProductException;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Models\Product\Product;
 use App\Repository\Product\Write\WriteProductRepositoryInterface;
 use App\Services\Product\Dto\UpdateProductDto;
+use Illuminate\Http\JsonResponse;
 
 class UpdateProductAction
 {
@@ -14,8 +16,12 @@ class UpdateProductAction
     )
     {
     }
-    public function run(UpdateProductRequest $request, UpdateProductDto $dto)
+
+    /**
+     * @throws UpdateProductException
+     */
+    public function run(UpdateProductRequest $request, UpdateProductDto $dto): void
     {
-        return $this->writeProductRepository->update($request->getUserId(), Product::updateProduct($dto));
+         $this->writeProductRepository->update($request->getUserId(), Product::updateProduct($dto));
     }
 }

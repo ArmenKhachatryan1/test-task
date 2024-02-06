@@ -2,14 +2,17 @@
 
 namespace App\Exceptions\Product;
 
-class DeleteProductException extends ProductExeption
+use App\Exceptions\ProductException;
+
+class DeleteProductException extends ProductException
 {
-    public function getErrorMessage()
-    {
-        $data = [
-            'message' => 'fail to delete product',
-            'status' => ProductExeption::FAIL_TO_DELETE_PRODUCT
-        ];
-        return response()->json($data);
-    }
+  public function getStatus():int
+  {
+     return ProductException::FAIL_TO_DELETE_PRODUCT;
+  }
+
+  public function getStatusMessage():string
+  {
+      return "fail to delete product";
+  }
 }

@@ -2,17 +2,31 @@
 
 namespace App\Repository\Product\Read;
 
+use App\Exceptions\Product\ProductDoesNotExist;
 use App\Models\Product\Product;
+use Illuminate\Database\Eloquent\Collection;
 
 class ReadProductRepository implements ReadProductRepositoryInterface
 {
-    public function getById(int $id, string $relation)
+    /**
+     * @throws ProductDoesNotExist
+     */
+    public function getById(int $id, string $relation): ?Product
     {
-        return Product::query()->where('id', $id)->with($relation)->first();
+        if (!$product = Product::query()->where('id', $id)->with($relation)->first()) {
+            throw new ProductDoesNotExist();
+        }
+        return $product;
     }
 
-    public function getAllProducts(string $relation, int $id)
+    /**
+     * @throws ProductDoesNotExist
+     */
+    public function getAllProducts(string $relation, int $id): Collection
     {
-        return Product::query()->where('user_id', $id)->get()->all();
+        if ($products = Product::query()->where('user_id', $id)->get()) {
+            throw new ProductDoesNotExist();
+        }
+        return $products;
     }
 }

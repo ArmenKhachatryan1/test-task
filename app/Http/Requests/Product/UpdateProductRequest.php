@@ -11,7 +11,7 @@ class UpdateProductRequest extends FormRequest
     private const DESCRIPTION = 'description';
     private const PRICE = 'price';
 
-    public function rules()
+    public function rules(): array
     {
         return [
             self::NAME => [

@@ -2,14 +2,17 @@
 
 namespace App\Exceptions\Product;
 
-class ProductDoesNotExist extends ProductExeption
+use App\Exceptions\ProductException;
+
+class ProductDoesNotExist extends ProductException
 {
-    public function getErrorMessage()
+    public function getStatus(): int
     {
-        $data = [
-            'message' => 'product does not exist',
-            'status' => ProductExeption::PRODUCT_DOES_NOT_EXIST
-        ];
-        return response()->json($data);
+        return ProductException::PRODUCT_DOES_NOT_EXIST;
+    }
+
+    public function getStatusMessage(): string
+    {
+        return 'Product does not exist';
     }
 }

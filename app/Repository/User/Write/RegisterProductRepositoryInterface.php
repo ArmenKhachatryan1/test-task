@@ -4,5 +4,5 @@ namespace App\Repository\User\Write;
 
 interface RegisterProductRepositoryInterface
 {
-    public function register(array $data);
+    public function register(array $data):array;
 }
